@@ -18,14 +18,16 @@ const EVENTS = {
   },
 };
 
-const rooms: Record<string, { name: string }> = {};
+export const rooms: Record<string, { name: string }> = {};
 
 function socket({ io }: { io: Server }) {
   logger.info(`Sockets enabled`);
 
   io.on(EVENTS.connection, (socket: Socket) => {
+    setInterval(() => {
+      logger.info(`Rooms:  ${JSON.stringify(rooms)}`)
+    }, 3000)
     socket.emit(EVENTS.SERVER.ROOMS, rooms);
-    socket.join('1')
     logger.info(`Client connected ${socket.id}  (${rooms})`);
     /**
      * When a user disconnects

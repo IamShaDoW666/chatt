@@ -1,17 +1,18 @@
+import { useSockets } from "@/context/socket.context";
 import Head from "next/head";
-import Link from "next/link";
 import { useRef } from "react";
 
 const Home = () => {
-  const usernameRef = useRef<HTMLInputElement>(null)
+  const { socket } = useSockets();
+  const usernameRef = useRef<HTMLInputElement>(null);
   const login = () => {
-    if (usernameRef.current?.value === '') {
-      alert('Please enter a username')
+    if (usernameRef.current?.value === "") {
+      alert("Please enter a username");
       return;
-    };
-
-    window.location.href = '/chat'
-  }
+    }
+    usernameRef.current?.value && localStorage.setItem('username', usernameRef.current?.value)
+    window.location.href = "/chat";
+  };
   return (
     <main className="max-w-2xl mx-auto h-screen py-16 relative">
       <Head>
@@ -34,7 +35,12 @@ const Home = () => {
             className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-amber-600"
           />
         </div>
-        <button onClick={login} className="px-4 py-2 mt-8 rounded transition duration-300 bg-amber-300 hover:bg-neutral-700/30 hover:text-white active:bg-amber-300">Login</button>
+        <button
+          onClick={login}
+          className="px-4 py-2 mt-8 rounded transition duration-300 bg-amber-300 hover:bg-neutral-700/30 hover:text-white active:bg-amber-300"
+        >
+          Login
+        </button>
       </section>
     </main>
   );

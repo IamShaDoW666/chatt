@@ -6,7 +6,6 @@ import { BiExit } from "react-icons/bi";
 import { useSockets } from "@/context/socket.context";
 import Message from "@/components/Message";
 import EVENTS from "@/utils/events";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 
 interface Message {
@@ -65,6 +64,9 @@ export default function Chat() {
   }
 
   useEffect(() => {
+    if (localStorage.getItem('username') === '' || !localStorage.getItem('username')) {
+      window.location.href = '/'
+    }
     inputRef.current?.focus();
   }, []);
   return (
@@ -78,7 +80,7 @@ export default function Chat() {
       <section className="bg-amber-300 p-4 rounded-t-xl w-full flex justify-between items-center">
         <h1 className="text-4xl font-bold cursor-pointer">Chatt</h1>
         <div className="flex justify-between gap-x-4 items-center">
-        <div className="cursor-pointer">Username</div>
+        <div className="cursor-pointer">{ username }</div>
         <Link href={'/rooms'} onClick={leaveRoom} className="hover:bg-neutral-700 transition-all duration-200 hover:text-amber-300 rounded active:bg-amber-400"><BiExit size={32}/></Link>
         </div>
       </section>

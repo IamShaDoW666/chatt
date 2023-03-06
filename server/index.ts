@@ -3,24 +3,27 @@ import express, { Request, Response, Express } from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import next from "next";
-import socket from "./socket";
+import socket, { rooms } from "./socket";
 
-const port = 5000
-const nextApp = next({dev: true});
+const port = 5000;
+const nextApp = next({ dev: true });
 const handle = nextApp.getRequestHandler();
 
- nextApp.prepare().then(() => {
+nextApp.prepare().then(() => {
   const app: Express = express();
-  const httpServer = createServer(app)
-  const io = new Server(httpServer)
+  const httpServer = createServer(app);
+  const io = new Server(httpServer);
   app.get("/test", (req: Request, res: Response) => {
     res.send("OK!");
+  });
+  app.get("/get-rooms", (req, res) => {
+    res.send(rooms);
   });
   app.get("*", (req, res) => {
     return handle(req, res);
   });
   httpServer.listen(port, () => {
-    logger.info(`🚀 Server is listening port ${port}🚀`)
-    socket({io})
+    logger.info(`🚀 Server is listening port ${port}🚀`);
+    socket({ io });
   });
 });

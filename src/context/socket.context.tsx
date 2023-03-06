@@ -22,7 +22,7 @@ interface Context {
   messages?: Message[];
   setMessages: Function;
   roomId?: string;
-  rooms: object;
+  rooms: Record<string, { name: string }>;
   messageBoxRef: React.RefObject<HTMLDivElement>  | null;
   showNew: Boolean;
   setShowNew: Function
@@ -40,9 +40,9 @@ const SocketContext = createContext<Context>({
 });
 
 const SocketProvider = (props: any) => {
-  const [username, setUsername] = useState("Milan");
-  const [roomId, setRoomId] = useState("1");
-  const [rooms, setRooms] = useState({});
+  const [username, setUsername] = useState('Milan');
+  const [roomId, setRoomId] = useState();
+  const [rooms, setRooms] = useState<Record<string, { name: string }>>({});
   const [messages, setMessages] = useState<Message[]>([]);
   const [showNew, setShowNew] = useState(false);
   const messageBoxRef = useRef<HTMLDivElement>(null);
@@ -51,8 +51,22 @@ const SocketProvider = (props: any) => {
       document.title = "Chat app";
     };
   }, []);
-
+  socket.on(EVENTS.SERVER.ROOMS, (value) => {
+    setRooms(value);
+  });
+  // const getRooms = async () => {
+  //   let res = await fetch('https://iamshadow666-automatic-succotash-jpv7p57vp7pcvvr-5000.preview.app.github.dev/get-rooms')
+  //   setRooms(res.body)
+  // }
   useEffect(() => {
+    setUsername(localStorage.getItem('username') || '')
+    // getRooms()
+    socket.on(EVENTS.SERVER.JOINED_ROOM, (value) => {
+      setRoomId(value);
+  
+      setMessages([]);
+    });
+
     socket.on(EVENTS.SERVER.ROOM_MESSAGE, ({ message, username, time }) => {
       // messageBoxRef.current?.scroll({top: messageBoxRef.current.scrollHeight, behavior: 'smooth'})
       // setShowNew(true)
@@ -69,6 +83,8 @@ const SocketProvider = (props: any) => {
     });
     return () => {
       socket.off(EVENTS.SERVER.ROOM_MESSAGE);
+      socket.off(EVENTS.SERVER.ROOMS)
+      socket.off(EVENTS.SERVER.JOINED_ROOM)
     };
   }, [socket]);
 
