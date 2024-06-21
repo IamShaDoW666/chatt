@@ -14,7 +14,7 @@ const Message: React.FC<MessageProps> = ({ text, sent, idx }) => {
             {text}
           </div>
           <img
-            src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+            src="https://fastly.picsum.photos/id/508/200/200.jpg?hmac=K4JUehX1v2yEPLUOyJDAmRhZu8PgMu4vv6ypO-CA5nw"
             className="object-cover h-8 w-8 rounded-full"
             alt="Avatar"
           />
@@ -26,7 +26,7 @@ const Message: React.FC<MessageProps> = ({ text, sent, idx }) => {
       <>
         <div key={idx} className="flex justify-start mb-4">
           <img
-            src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+            src="https://fastly.picsum.photos/id/616/200/200.jpg?hmac=QEzyEzU6nVn4d_vdALhsT9UAtTUEVhwrT-kM5ogBqKM"
             className="object-cover h-8 w-8 rounded-full"
             alt=""
           />

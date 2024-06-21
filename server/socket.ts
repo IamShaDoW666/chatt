@@ -26,7 +26,7 @@ function socket({ io }: { io: Server }) {
   io.on(EVENTS.connection, (socket: Socket) => {
     socket.emit(EVENTS.SERVER.ROOMS, rooms);
     socket.join('1')
-    logger.info(`Client connected ${socket.id}  (${rooms})`);
+    logger.info(`Client connected ${socket.id}  (${JSON.stringify(rooms)})`);
     /**
      * When a user disconnects
      */

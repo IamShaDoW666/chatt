@@ -19,8 +19,8 @@ const handle = nextApp.getRequestHandler();
   app.get("*", (req, res) => {
     return handle(req, res);
   });
-  httpServer.listen(port, () => {
-    logger.info(`🚀 Server is listening port ${port}🚀`)
+  httpServer.listen(port, '0.0.0.0', () => {
+    logger.info(`Server is listening port ${port}`)
     socket({io})
   });
 });
